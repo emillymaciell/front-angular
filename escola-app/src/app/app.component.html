@@ -1,14 +1,17 @@
-<main class="main">
-  <h1>Disciplinas:</h1>
-  <hr />
-  <ul>
-    <li *ngFor="let disciplina of disciplinas" (click)="selecionar(disciplina)">
-      <p [class.selecionado]="selecionado == disciplina">
-        {{ disciplina.nome }}
-      </p>
-      <p *ngIf="selecionado == disciplina">{{ disciplina.descricao }}</p>
-    </li>
-  </ul>
+<main>
+
+  <app-editor-de-disciplinas
+    
+  />
+
+  <app-lista-de-disciplinas 
+    [disciplinas]="disciplinas" 
+    [editando]="editando" 
+    [selecionado]="selecionado"
+    (onEditar)="editar($event)" 
+    (onExcluir)="excluir($event)" 
+    (onSelecionar)="selecionar($event)" 
+  />
+
+  <router-outlet />
 </main>
-</main>
-<router-outlet />

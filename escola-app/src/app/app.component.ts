@@ -3,15 +3,19 @@ import { Disciplina } from './disciplina.model';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ListaDeDisciplinasComponent } from './lista-de-disciplinas/lista-de-disciplinas.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ListaDeDisciplinasComponent, CommonModule],
+  imports: [RouterOutlet, ListaDeDisciplinasComponent, CommonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  selecionado = null;
+  selecionado: Disciplina | null = null;
+  nome: string = "";
+  descricao: string = "";
+  editando: Disciplina | null = null;
   disciplinas = [
     new Disciplina(
       'Língua Portuguesa',
@@ -55,7 +59,47 @@ export class AppComponent {
     ),
   ];
 
-  selecionar(disciplina: Disciplina){
-    this.selecionado = disciplina; //dando erro!
+  selecionar(disciplina: Disciplina) {
+    if (this.selecionado === disciplina) {
+      this.selecionado = null;
+    } else {
+      this.selecionado = disciplina;
+    }
+  }
+
+  salvar() {
+    if (this.editando) {
+      this.editando.nome = this.nome;
+      this.editando.descricao = this.descricao;
+    } else {
+      const d = new Disciplina(this.nome, this.descricao);
+      this.disciplinas.push(d);
+    }
+    this.nome = "";
+    this.descricao = "";
+    this.editando = null;
+  }
+
+  excluir(disciplina: Disciplina) {
+    if (this.editando == disciplina) {
+      alert('Você não pode excluir uma disciplina que está editando')
+    } else {
+      if (confirm('Tem certeza que deseja excluir a disciplina ' + disciplina.nome + '?')) {
+        const i = this.disciplinas.indexOf(disciplina);
+        this.disciplinas.splice(i, 1);
+      }
+    }
+  }
+
+  editar(disciplina: Disciplina) {
+    this.nome = disciplina.nome;
+    this.descricao = disciplina.descricao;
+    this.editando = disciplina;
+  }
+
+  cancelar() {
+    this.nome = " ";
+    this.descricao = " ";
+    this.editando = null;
   }
 }
