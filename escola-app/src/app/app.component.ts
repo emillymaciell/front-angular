@@ -4,10 +4,11 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ListaDeDisciplinasComponent } from './lista-de-disciplinas/lista-de-disciplinas.component';
 import { FormsModule } from '@angular/forms';
+import { EditorDeDisciplinasComponent } from './editor-de-disciplinas/editor-de-disciplinas.component'; // NOVO
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ListaDeDisciplinasComponent, CommonModule, FormsModule],
+  imports: [RouterOutlet, ListaDeDisciplinasComponent, CommonModule, FormsModule, EditorDeDisciplinasComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -67,17 +68,17 @@ export class AppComponent {
     }
   }
 
-  salvar() {
+  salvar(payload: { nome: string, descricao: string }) {
     if (this.editando) {
-      this.editando.nome = this.nome;
-      this.editando.descricao = this.descricao;
+      this.editando.nome = payload.nome;
+      this.editando.descricao = payload.descricao;
     } else {
-      const d = new Disciplina(this.nome, this.descricao);
+      const d = new Disciplina(payload.nome, payload.descricao);
       this.disciplinas.push(d);
     }
-    this.nome = "";
-    this.descricao = "";
-    this.editando = null;
+    this.nome = payload.nome;
+    this.descricao = payload.descricao;
+    this.cancelar();
   }
 
   excluir(disciplina: Disciplina) {
@@ -98,8 +99,8 @@ export class AppComponent {
   }
 
   cancelar() {
-    this.nome = " ";
-    this.descricao = " ";
+    this.nome = "";
+    this.descricao = "";
     this.editando = null;
   }
 }

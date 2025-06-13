@@ -7,10 +7,10 @@
             {{ disciplina.nome }}
         </p>
         @if (selecionado == disciplina){
-        <p>{{ disciplina.descricao }}</p>
+        <p>{{ disciplina.descricao}}</p>
         }
-        <button (click)="excluir(disciplina)">Excluir</button>
-        <button (click)="editar(disciplina)">Editar</button>
+        <button (click)="excluir(disciplina); $event.stopPropagation()">Excluir</button>
+        <button (click)="editar(disciplina); $event.stopPropagation()">Editar</button>
     </li>
     }
 </ul>
