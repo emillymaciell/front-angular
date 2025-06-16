@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "nome": "Língua Portuguesa",
+        "descricao": "Estudo da gramática, interpretação de textos e das obras da literatura."
+    },
+    {
+        "id": 2,
+        "nome": "Matemática",
+        "descricao": "Desenvolvimento do raciocínio lógico-abstrato, com estudo de números, álgebra e geometria."
+    },
+    {
+        "id": 3,
+        "nome": "Língua Estrangeira Moderna-Inglês",
+        "descricao": "Desenvolvimento das competências comunicativas (leitura, escrita, audição e fala) em língua inglesa."
+    }
+]
