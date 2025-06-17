@@ -26,8 +26,8 @@ export class DisciplinasService {
     ];
   }
 
-  todas(): Array<Disciplina> | null {
-    return this.disciplinas;
+  todas(): Array<Disciplina> {
+    return this.disciplinas ?? [];
   }
 
   salvar(id: number, nome: string | null, descricao: string | null): Disciplina {

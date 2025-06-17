@@ -15,10 +15,10 @@ import { DisciplinasService } from './disciplinas.service';
 })
 export class AppComponent {
   selecionado: Disciplina | null = null;
-  nome: string = "";
-  descricao: string = "";
-  editando: Disciplina | null = { id: 0, nome: '', descricao: '' };
-  disciplinas: Array<Disciplina> | null = null;
+  nome: string | null = "";
+  descricao: string | null = "";
+  editando: Disciplina = new Disciplina(0, "", "");
+  disciplinas: Array<Disciplina>;
 
   constructor(private disciplinasService: DisciplinasService) {
     this.disciplinas = this.disciplinasService.todas();
@@ -35,7 +35,7 @@ export class AppComponent {
   salvar() {
     try {
       const saveDisciplina = this.disciplinasService.salvar(this.editando?.id, this.editando?.nome, this.editando?.descricao);
-      this.editando = { id: 0, nome: '', descricao: '' };
+      this.editando = new Disciplina(0, "", "");
     } catch (e) {
     }
   }

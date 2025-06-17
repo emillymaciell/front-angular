@@ -17,16 +17,19 @@ export class EditorDeDisciplinasComponent {
   descricao: string | null = "";
 
   @Input()
-  disciplinas = [new Disciplina(" ", " ")];
+  id: number = 0
+
+  @Input()
+  disciplinas = [new Disciplina(0, " ", " ")];
 
   @Input()
   editando: Disciplina | null = null;
 
   @Output()
-  onSalvar = new EventEmitter<{ nome: string, descricao: string }>();
+  onSalvar = new EventEmitter<Disciplina>();
 
   @Output()
-  onCancelar = new EventEmitter<void>();
+  onCancelar = new EventEmitter<Disciplina>();
 
   @Output()
   onEditar = new EventEmitter<Disciplina>();
@@ -39,7 +42,8 @@ export class EditorDeDisciplinasComponent {
   }
 
   salvar() {
-    this.onSalvar.emit({ nome: this.nome || '', descricao: this.descricao || "" });
+    const novaDisciplina = new Disciplina(this.id, this.nome || '', this.descricao || '');
+    this.onSalvar.emit(novaDisciplina);
   }
 
   cancelar() {

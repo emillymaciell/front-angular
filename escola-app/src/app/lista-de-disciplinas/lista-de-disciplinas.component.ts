@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 
 export class ListaDeDisciplinasComponent {
   @Input()
-  disciplinas = [new Disciplina("", "")];
+  disciplinas = [new Disciplina(0, "", "")];
 
   @Input()
   editando: Disciplina | null = null;
@@ -45,5 +45,5 @@ export class ListaDeDisciplinasComponent {
   selecionar(disciplina: Disciplina) {
     this.onSelecionar.emit(disciplina);
   }
-  
+
 }
