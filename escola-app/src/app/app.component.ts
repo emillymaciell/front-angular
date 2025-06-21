@@ -2,14 +2,12 @@ import { Component } from '@angular/core';
 import { Disciplina } from './disciplina.model';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ListaDeDisciplinasComponent } from './lista-de-disciplinas/lista-de-disciplinas.component';
 import { FormsModule } from '@angular/forms';
-import { EditorDeDisciplinasComponent } from './editor-de-disciplinas/editor-de-disciplinas.component';
 import { DisciplinasService } from './disciplinas.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ListaDeDisciplinasComponent, CommonModule, FormsModule, EditorDeDisciplinasComponent],
+  imports: [RouterOutlet, CommonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -17,7 +15,7 @@ export class AppComponent {
   selecionado: Disciplina | null = null;
   nome: string | null = "";
   descricao: string | null = "";
-  editando: Disciplina = { id: 0, nome: '', descricao: '' };
+  editando: Disciplina | null = null;
   disciplinas: Disciplina[] = [];
 
   constructor(private disciplinasService: DisciplinasService) {
@@ -33,16 +31,26 @@ export class AppComponent {
   }
 
   salvar() {
-    try {
-      this.disciplinasService.salvar(this.editando.id, this.editando.nome, this.editando.descricao).subscribe(disciplina => {
-        this.atualizarLista();
-      })
-    } catch (e) {
-      console.log(e)
+    if (this.editando) {
+      try {
+        this.disciplinasService.salvar(this.editando?.id, this.nome as string).subscribe(disciplina => {
+          this.atualizarLista();
+        })
+
+      }
+      catch (e) {
+        console.log(e)
+      }
+    } else {
+      try {
+        this.disciplinasService.salvar(null, this.nome as string)
+      }
+      catch (e) {
+        console.log(e)
+      }
     }
   }
-  
-  /*
+
   excluir(disciplina: Disciplina) {
     if (this.editando == disciplina) {
       alert('Você não pode excluir uma disciplina que está editando')
@@ -50,17 +58,15 @@ export class AppComponent {
       if (confirm('Tem certeza que deseja excluir a disciplina ' + disciplina.nome + '?')) {
       }
       try {
-        this.disciplinasService.excluir(disciplina);
+        this.disciplinasService.excluir(disciplina.id);
       } catch (e) {
         console.log(e)
       }
     }
   }
-*/
 
   editar(disciplina: Disciplina) {
     this.nome = disciplina.nome;
-    this.descricao = disciplina.descricao;
     this.editando = disciplina;
   }
 
@@ -70,3 +76,4 @@ export class AppComponent {
     this.editando = new Disciplina(0, '', '');
   }
 }
+

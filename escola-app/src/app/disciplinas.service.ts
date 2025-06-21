@@ -3,50 +3,53 @@ import { Disciplina } from './disciplina.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DisciplinasService {
 
-  private disciplinas: Disciplina[] = []
-  API_URL = "http://localhost:3000"
+  private disciplinas: Disciplina[] = [];
+  API_URL = 'http://localhost:3000';
 
-  constructor(private http: HttpClient, private disciplinaService: DisciplinasService) {
-
-  }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   todas() {
     return this.http.get<Disciplina[]>(this.API_URL + '/disciplinas');
   }
 
-  salvar(id: number, nome: string, descricao: string) {
-    let editDisciplina = { nome: nome, descricao: descricao };
+  salvar(id: number | null, nome: string, descricao?: string) {
+    let editDisciplina = { id: id, nome: nome, descricao: descricao };
     if (id) {
-      if (editDisciplina) {
-        editDisciplina.nome = nome;
-        editDisciplina.descricao = descricao;
-        return this.http.patch(this.API_URL + '/disciplina' + id, editDisciplina);
-      } else {
-        throw new Error('Não foi possível encontrar a disciplina');
-      }
+      editDisciplina.nome = nome;
+      editDisciplina.descricao = descricao;
+      return this.http.patch(
+        this.API_URL + '/disciplina' + id,
+        editDisciplina
+      );
     }
-    return this.http.post(this.API_URL + '/disciplinas' + editDisciplina,{observe:'body'});
+    editDisciplina.id = this.gerarProximoId()
+    return this.http.post(this.API_URL + '/disciplinas' + editDisciplina, {
+      observe: 'body',
+    });
   }
 
-  cancelar(): void {
-    this.disciplinas = []
-  }
-
-  /*private gerarProximoId() {
-    if (this.disciplinas.length === 0) return 1;
-
-    const maiorId = Math.max(...this.disciplinas.map((d) => this.disciplinaService.id))
-  }
-*/
   excluir(id: number): void {
-    this.http.delete<void>(`${"assets/dados/disciplinas.json"}/${id}`)
+    this.http.delete<void>(`${this.API_URL + "/disciplinas"}/${id}`);
   }
 
   encontrar(params: number | string) {
-    return this.http.get(this.API_URL + '/diciplinas' + params)
+    return this.http.get(this.API_URL + "/disciplinas" + params)
+  }
+
+  cancelar(): void {
+    this.disciplinas = [];
+  }
+
+  private gerarProximoId() {
+    if (this.disciplinas.length === 0) return 1;
+
+    const maiorId = Math.max(...this.disciplinas.map((d) => d.id));
+    return maiorId + 1;
   }
 }

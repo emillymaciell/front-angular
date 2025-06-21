@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Disciplina } from '../disciplina.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-editor-de-disciplinas',
-  imports: [FormsModule],
+  imports: [FormsModule,RouterModule],
   templateUrl: './editor-de-disciplinas.component.html',
   styleUrl: './editor-de-disciplinas.component.css'
 })
