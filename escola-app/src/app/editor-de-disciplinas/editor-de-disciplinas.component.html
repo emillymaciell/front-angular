@@ -1,17 +1,19 @@
-<hr />
-<h2>Cadastrar</h2>
-<p>Use este formulário para cadastrar ou editar uma disciplina.</p>
-<form #cadastro="ngForm" (submit)="salvar()">
-    <div>
-        <label for="nome">Nome</label><br>
-        <input type="text" id="nome" name="nome" [(ngModel)]="nome" required>
-    </div>
-    <div>
-        <label for="descricao">Descrição</label><br>
-        <input id="descricao" name="descricao" [(ngModel)]="descricao">
-    </div>
-    <button type="submit" class="btn btn-primary" [disabled]="!cadastro.valid">
-        Salvar
-    </button>
-    <button type="reset" (click)="cancelar()">Cancelar</button>
-</form>
+<div class="content-box">
+    <h1>{{ tituloDaPagina }}</h1>
+    <p>Use este formulário para cadastrar ou editar uma disciplina.</p>
+
+    <form #cadastro="ngForm" (ngSubmit)="salvar()" class="disciplina-form">
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" [(ngModel)]="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <input id="descricao" name="descricao" [(ngModel)]="descricao">
+        </div>
+        <div class="button-group">
+            <button type="submit" [disabled]="!cadastro.valid">Salvar</button>
+            <button type="button" (click)="cancelar()">Cancelar</button>
+        </div>
+    </form>
+</div>

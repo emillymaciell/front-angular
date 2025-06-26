@@ -1,57 +1,59 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Disciplina } from '../disciplina.model';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { DisciplinasService } from '../disciplinas.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-editor-de-disciplinas',
-  imports: [FormsModule,RouterModule],
+  standalone: true,
+  imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './editor-de-disciplinas.component.html',
-  styleUrl: './editor-de-disciplinas.component.css'
+  styleUrls: ['./editor-de-disciplinas.component.css']
 })
-export class EditorDeDisciplinasComponent {
+export class EditorDeDisciplinasComponent implements OnInit {
+  nome: string = "";
+  descricao: string = "";
 
-  @Input()
-  nome: string | null = "";
+  editandoId: any | null = null;
+  tituloDaPagina: string = "Nova Disciplina";
 
-  @Input()
-  descricao: string | null = "";
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private disciplinasService = inject(DisciplinasService);
 
-  @Input()
-  id: number = 0
-
-  @Input()
-  disciplinas = [new Disciplina(0, " ", " ")];
-
-  @Input()
-  editando: Disciplina | null = null;
-
-  @Output()
-  onSalvar = new EventEmitter<Disciplina>();
-
-  @Output()
-  onCancelar = new EventEmitter<Disciplina>();
-
-  @Output()
-  onEditar = new EventEmitter<Disciplina>();
-
-
-  constructor() {
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id && id !== 'nova') {
+      this.editandoId = id;
+      this.tituloDaPagina = "Editar Disciplina";
+      this.disciplinasService.encontrarPorId(id).subscribe(disciplina => {
+        this.nome = disciplina.nome;
+        this.descricao = disciplina.descricao || '';
+      });
+    }
   }
 
-  ngOnInit() {
+  salvar(): void {
+    if (!this.nome) {
+      alert('O nome da disciplina é obrigatório!');
+      return;
+    }
+
+    const disciplinaPayload = { nome: this.nome, descricao: this.descricao };
+
+    if (this.editandoId) {
+      this.disciplinasService.atualizar(this.editandoId, disciplinaPayload).subscribe(() => {
+        this.router.navigate(['/disciplinas']);
+      });
+    } else {
+      this.disciplinasService.salvar(disciplinaPayload).subscribe(() => {
+        this.router.navigate(['/disciplinas']);
+      });
+    }
   }
 
-  salvar() {
-    const novaDisciplina = new Disciplina(this.id, this.nome || '', this.descricao || '');
-    this.onSalvar.emit(novaDisciplina);
-  }
-
-  cancelar() {
-    this.onCancelar.emit();
-  }
-
-  editar(disciplina: Disciplina) {
-    this.onEditar.emit(disciplina);
+  cancelar(): void {
+    this.router.navigate(['/disciplinas']);
   }
 }

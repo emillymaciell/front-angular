@@ -1,55 +1,32 @@
-import { Injectable } from '@angular/core';
-import { Disciplina } from './disciplina.model';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Disciplina } from './disciplina.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DisciplinasService {
+  private http = inject(HttpClient);
+  private readonly API_URL = 'http://localhost:3000/disciplinas';
 
-  private disciplinas: Disciplina[] = [];
-  API_URL = 'http://localhost:3000';
-
-  constructor(
-    private http: HttpClient,
-  ) { }
-
-  todas() {
-    return this.http.get<Disciplina[]>(this.API_URL + '/disciplinas');
+  todas(): Observable<Disciplina[]> {
+    return this.http.get<Disciplina[]>(this.API_URL);
   }
 
-  salvar(id: number | null, nome: string, descricao?: string) {
-    let editDisciplina = { id: id, nome: nome, descricao: descricao };
-    if (id) {
-      editDisciplina.nome = nome;
-      editDisciplina.descricao = descricao;
-      return this.http.patch(
-        this.API_URL + '/disciplina' + id,
-        editDisciplina
-      );
-    }
-    editDisciplina.id = this.gerarProximoId()
-    return this.http.post(this.API_URL + '/disciplinas' + editDisciplina, {
-      observe: 'body',
-    });
+  encontrarPorId(id: string): Observable<Disciplina> {
+    return this.http.get<Disciplina>(`${this.API_URL}/${id}`);
   }
 
-  excluir(id: number): void {
-    this.http.delete<void>(`${this.API_URL + "/disciplinas"}/${id}`);
+  salvar(disciplina: Omit<Disciplina, 'id'>): Observable<Disciplina> {
+    return this.http.post<Disciplina>(this.API_URL, disciplina);
   }
 
-  encontrar(params: number | string) {
-    return this.http.get(this.API_URL + "/disciplinas" + params)
+  atualizar(id: any, disciplina: Partial<Disciplina>): Observable<Disciplina> {
+    return this.http.patch<Disciplina>(`${this.API_URL}/${id}`, disciplina);
   }
 
-  cancelar(): void {
-    this.disciplinas = [];
-  }
-
-  private gerarProximoId() {
-    if (this.disciplinas.length === 0) return 1;
-
-    const maiorId = Math.max(...this.disciplinas.map((d) => d.id));
-    return maiorId + 1;
+  excluir(id: any): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
 }

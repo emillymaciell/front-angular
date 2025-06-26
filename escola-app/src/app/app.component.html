@@ -1,5 +1,17 @@
-<main>
+<header class="main-header">
+    <div class="logo-container">
+        <div class="logo-icon">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+    </div>
+    <nav class="main-nav">
+        <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">HOME</a>
+        <a routerLink="/disciplinas" routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{exact: true}">DISCIPLINAS</a>
+        <a routerLink="/disciplinas/nova" routerLinkActive="active-link">CADASTRAR</a>
+    </nav>
+</header>
 
-
+<main class="content-area">
+    <router-outlet></router-outlet>
 </main>
-<router-outlet />

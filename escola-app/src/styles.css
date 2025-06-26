@@ -1,16 +1,27 @@
-.selecionado{
-    font-weight: bold;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
+
+:root {
+  --cor-azul-escuro: #2c3e50;
+  --cor-azul-claro: #edf2f7;
+  --cor-texto-escuro: #34495e;
+  --cor-texto-claro: #ffffff;
+  --cor-texto-suave: #7f8c8d;
+  --cor-borda: #e2e8f0;
+  --cor-fundo: #ffffff;
 }
 
-li p:nth-child(1){
-    cursor: pointer;
-    font-size: 12pt;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-li p:nth-child(1):hover{
-    font-weight: bold;
+body, html {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-escuro);
 }
 
-li p:nth-child(2){
-    font-size: 11pt;
+button {
+  font-family: 'Nunito', sans-serif;
 }

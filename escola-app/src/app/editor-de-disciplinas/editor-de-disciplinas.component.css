@@ -1,0 +1,69 @@
+.content-box {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: var(--cor-azul-claro);
+  border-radius: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+p {
+  color: var(--cor-texto-suave);
+  margin-bottom: 30px;
+}
+
+.disciplina-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.button-group {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.button-group button {
+  padding: 12px 25px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.button-group button[type="submit"] {
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-texto-claro);
+}
+
+.button-group button[type="button"] {
+  background-color: transparent;
+  color: var(--cor-texto-suave);
+}
+
+.button-group button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}

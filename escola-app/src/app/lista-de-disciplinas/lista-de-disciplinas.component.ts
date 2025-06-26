@@ -1,51 +1,51 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Disciplina } from '../disciplina.model';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { DisciplinasService } from '../disciplinas.service';
+import { Disciplina } from '../disciplina.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lista-de-disciplinas',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './lista-de-disciplinas.component.html',
-  styleUrl: './lista-de-disciplinas.component.css'
+  styleUrls: ['./lista-de-disciplinas.component.css']
 })
+export class ListaDeDisciplinasComponent implements OnInit {
 
-export class ListaDeDisciplinasComponent {
-  @Input()
-  disciplinas = [new Disciplina(0, "", "")];
+  public disciplinas: Disciplina[] = [];
+  public disciplinaSelecionada: Disciplina | null = null;
 
-  @Input()
-  editando: Disciplina | null = null;
-
-  @Input()
-  selecionado: null | Disciplina = null;
-
-  @Output()
-  onEditar = new EventEmitter<Disciplina>();
-
-  @Output()
-  onExcluir = new EventEmitter<Disciplina>();
-
-  @Output()
-  onSelecionar = new EventEmitter<Disciplina>();
-
-  constructor() {
-  }
+  private disciplinasService = inject(DisciplinasService);
 
   ngOnInit() {
+    this.carregarDisciplinas();
+  }
+
+  carregarDisciplinas() {
+    this.disciplinasService.todas().subscribe(dados => {
+      this.disciplinas = dados;
+    });
   }
 
   excluir(disciplina: Disciplina) {
-    this.onExcluir.emit(disciplina);
+    if (confirm(`Tem certeza que deseja excluir "${disciplina.nome}"?`)) {
+      this.disciplinasService.excluir(disciplina.id).subscribe(() => {
+        this.carregarDisciplinas();
+      });
+    }
   }
 
-  editar(disciplina: Disciplina) {
-    this.onEditar.emit(disciplina);
+  ordenarPorNome() {
+    this.disciplinas.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 
-  selecionar(disciplina: Disciplina) {
-    this.onSelecionar.emit(disciplina);
+  selecionarDisciplina(disciplina: Disciplina) {
+    if (this.disciplinaSelecionada === disciplina) {
+      this.disciplinaSelecionada = null;
+    } else {
+      this.disciplinaSelecionada = disciplina;
+    }
   }
-
 }

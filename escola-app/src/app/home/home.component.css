@@ -1,0 +1,38 @@
+.content-box {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: var(--cor-azul-claro);
+  border-radius: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--cor-texto-escuro);
+}
+
+p {
+  color: var(--cor-texto-suave);
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.button-group button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-texto-claro);
+  cursor: pointer;
+  margin: 0 10px;
+  transition: transform 0.2s;
+}
+
+.button-group button:hover {
+  transform: scale(1.05);
+}
